@@ -1,4 +1,4 @@
 # れどめ
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username={cet-t}
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=cet-t
 )](https://github.com/anuraghazra/github-readme-stats)
