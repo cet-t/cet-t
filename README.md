@@ -1,3 +1,1 @@
-![](files/github-user-contribution.svg)
-
-![よくみるやつ](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=cet-t&theme=default)
+![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=cet-t&theme=default)
