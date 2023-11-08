@@ -3,6 +3,7 @@ https://github.com/trrne/box
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=cet-t&theme=dark)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=cet-t&theme=default)
 
+```
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -78,3 +79,4 @@ if exists('g:vscode')
         autocmd CursorHold * call VSCodeNotify('nvim-theme.normal')
     augroup END
 endif
+```
