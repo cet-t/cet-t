@@ -2,7 +2,9 @@ https://github.com/trrne/box
 
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=cet-t&theme=dark)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=cet-t&theme=default)
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=cet-t)
+
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=cet-t&theme=dark)
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=cet-t&theme=default)
 
 ```
 set tabstop=4
