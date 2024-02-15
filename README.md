@@ -4,3 +4,4 @@
 </p>
 
 ![](https://github-profile-trophy.vercel.app/?username=cet-t&theme=onedark&column=5)
+![](https://profile-counter.glitch.me/cet-t/count.svg)
