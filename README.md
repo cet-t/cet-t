@@ -1,4 +1,4 @@
-おもしろ関数あつめ https://github.com/cet-t/math/blob/main/easing_graph.py
+おもしろ関数あつめ https://github.com/cet-t/interesting-functions-py/blob/main/funcs.py
 
 <!--
 <p align="left"> 
