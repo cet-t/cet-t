@@ -1,4 +1,4 @@
-おもしろ関数あつめ https://github.com/cet-t/interesting-functions-py/blob/main/funcs.py
+おもしろ関数あつめ https://github.com/cet-t/if/blob/main/funcs.py
 
 <!--
 <p align="left"> 
