@@ -10,5 +10,9 @@ description = "乱数のシード値作るやつ、Rust用"
 name = "clipboard-editor"
 
 [[archive]]
+name = "splat-site"
+description= "ボット無しでいけんちゃう⁉️と思って作ったらいけたやつ"
+
+[[archive]]
 name = "urng_lab"
 description = "乱数生成システムをちゃんと作ろうとしたやつ"
