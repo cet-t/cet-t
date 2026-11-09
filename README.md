@@ -10,4 +10,5 @@
 
 | Repository | Description |
 | --- | --- |
+| [splat-site](https://github.com/cet-t/splat-site) | ボット無しでいけんちゃう⁉️と思って作ったらいけたやつ |
 | [urng_lab](https://github.com/cet-t/urng_lab) | 乱数生成システムをちゃんと作ろうとしたやつ |
