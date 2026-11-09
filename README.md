@@ -2,9 +2,9 @@
 
 | Repository | Description |
 | --- | --- |
-| [moelle](https://github.com/cet-t/moelle) | Random number generator abstractions |
-| [splitmix](https://github.com/cet-t/splitmix) | 乱数のシード値作るやつ、Rust用 |
-| [clipboard-editor](https://github.com/cet-t/clipboard-editor) | |
+| [moelle](https://github.com/cet-t/moelle) | 楽に乱数使えるようにしたやつ |
+| [splitmix](https://github.com/cet-t/splitmix) | 乱数のシード値作るやつ |
+| [clipboard-editor](https://github.com/cet-t/clipboard-editor) | クリップボード編集するやつ |
 
 # Archive
 
