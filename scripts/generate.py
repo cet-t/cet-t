@@ -13,8 +13,8 @@ from pathlib import Path
 
 BASE_URL = "https://github.com/cet-t/"
 CATEGORIES = (("projects", "Projects"), ("archive", "Archive"))
-ALLOWED_FIELDS = {"name", "description"}
-NAME_RE = re.compile(r"^[A-Za-z0-9._-]{1,100}$")
+ALLOWED_FIELDS = {"repo", "name", "description"}
+REPO_RE = re.compile(r"^[A-Za-z0-9._-]{1,100}$")
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -34,7 +34,7 @@ def load_config(path: Path) -> dict:
 
 
 def validate(config: dict) -> dict[str, list[dict[str, str]]]:
-    """Validate raw config and return {category: [{"name", "description"?}, ...]}."""
+    """Validate raw config and return {category: [{"repo", "name"?, "description"?}, ...]}."""
     known = {key for key, _ in CATEGORIES}
     unknown = sorted(set(config) - known)
     if unknown:
@@ -55,23 +55,24 @@ def validate(config: dict) -> dict[str, list[dict[str, str]]]:
             if extra:
                 raise ConfigError(f"{where}: unknown field(s): {', '.join(extra)}")
 
-            name = entry.get("name")
-            if not isinstance(name, str):
-                raise ConfigError(f"{where}: 'name' is required and must be a string")
-            if not NAME_RE.fullmatch(name) or name in {".", ".."}:
-                raise ConfigError(f"{where}: invalid repository name: {name!r}")
-            folded = name.lower()  # GitHub repository names are case-insensitive
+            repo_name = entry.get("repo")
+            if not isinstance(repo_name, str):
+                raise ConfigError(f"{where}: 'repo' is required and must be a string")
+            if not REPO_RE.fullmatch(repo_name) or repo_name in {".", ".."}:
+                raise ConfigError(f"{where}: invalid repository name: {repo_name!r}")
+            folded = repo_name.lower()  # GitHub repository names are case-insensitive
             if folded in seen:
-                raise ConfigError(f"{where}: duplicate repository {name!r} (also in {seen[folded]})")
+                raise ConfigError(f"{where}: duplicate repository {repo_name!r} (also in {seen[folded]})")
             seen[folded] = where
 
-            repo = {"name": name}
-            if "description" in entry:
-                desc = entry["description"]
-                if not isinstance(desc, str):
-                    raise ConfigError(f"{where}: 'description' must be a string")
-                if desc.strip():
-                    repo["description"] = desc
+            repo = {"repo": repo_name}
+            for field in ("name", "description"):
+                if field in entry:
+                    value = entry[field]
+                    if not isinstance(value, str):
+                        raise ConfigError(f"{where}: '{field}' must be a string")
+                    if value.strip():
+                        repo[field] = value
             repos.append(repo)
         result[key] = repos
     return result
@@ -83,6 +84,11 @@ def escape_cell(text: str) -> str:
     return text.replace("\\", "\\\\").replace("|", "\\|")
 
 
+def escape_label(text: str) -> str:
+    """Escape text for use as link text inside a table cell."""
+    return escape_cell(text).replace("[", "\\[").replace("]", "\\]")
+
+
 def render_table(repos: list[dict[str, str]]) -> str:
     with_desc = any("description" in r for r in repos)
     header = ["Repository", "Description"] if with_desc else ["Repository"]
@@ -91,7 +97,8 @@ def render_table(repos: list[dict[str, str]]) -> str:
         "| " + " | ".join("---" for _ in header) + " |",
     ]
     for r in repos:
-        cells = [f"[{r['name']}]({BASE_URL}{r['name']})"]
+        label = escape_label(r.get("name", r["repo"]))
+        cells = [f"[{label}]({BASE_URL}{r['repo']})"]
         if with_desc:
             cells.append(escape_cell(r.get("description", "")))
         lines.append("|" + "|".join(f" {c} " if c else " " for c in cells) + "|")

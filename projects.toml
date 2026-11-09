@@ -1,14 +1,15 @@
 [[projects]]
-name = "moelle"
-description = "Random number generator abstractions"
+name = "moelle / trng / urng_core"
+repo = "moelle"
+description = "楽に乱数使えるようにしたやつ"
 
 [[projects]]
-name = "splitmix"
+repo = "splitmix"
 description = "乱数のシード値作るやつ、Rust用"
 
 [[projects]]
-name = "clipboard-editor"
+repo = "clipboard-editor"
 
 [[archive]]
-name = "urng_lab"
+repo = "urng_lab"
 description = "乱数生成システムをちゃんと作ろうとしたやつ"
