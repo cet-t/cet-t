@@ -1,13 +1,14 @@
 [[projects]]
 name = "moelle"
-description = "Random number generator abstractions"
+description = "楽に乱数使えるようにしたやつ"
 
 [[projects]]
 name = "splitmix"
-description = "乱数のシード値作るやつ、Rust用"
+description = "乱数のシード値作るやつ"
 
 [[projects]]
 name = "clipboard-editor"
+description = "クリップボード編集するやつ"
 
 [[archive]]
 name = "splat-site"
