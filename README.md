@@ -3,11 +3,11 @@
 | Repository | Description |
 | --- | --- |
 | [moelle](https://github.com/cet-t/moelle) | Random number generator abstractions |
-| [splitmix](https://github.com/cet-t/splitmix) | SplitMix32 / SplitMix64 |
+| [splitmix](https://github.com/cet-t/splitmix) | 乱数のシード値作るやつ、Rust用 |
 | [clipboard-editor](https://github.com/cet-t/clipboard-editor) | |
 
 # Archive
 
 | Repository | Description |
 | --- | --- |
-| [urng](https://github.com/cet-t/urng) | Random number generation library |
+| [urng_lab](https://github.com/cet-t/urng_lab) | 乱数生成システムをちゃんと作ろうとしたやつ |
