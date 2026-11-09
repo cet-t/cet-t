@@ -1,0 +1,14 @@
+[[projects]]
+name = "moelle"
+description = "Random number generator abstractions"
+
+[[projects]]
+name = "splitmix"
+description = "SplitMix32 / SplitMix64"
+
+[[projects]]
+name = "clipboard-editor"
+
+[[archive]]
+name = "urng"
+description = "Random number generation library"
