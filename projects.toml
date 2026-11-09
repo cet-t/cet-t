@@ -4,11 +4,11 @@ description = "Random number generator abstractions"
 
 [[projects]]
 name = "splitmix"
-description = "SplitMix32 / SplitMix64"
+description = "乱数のシード値作るやつ、Rust用"
 
 [[projects]]
 name = "clipboard-editor"
 
 [[archive]]
-name = "urng"
-description = "Random number generation library"
+name = "urng_lab"
+description = "乱数生成システムをちゃんと作ろうとしたやつ"
