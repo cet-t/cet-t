@@ -1,19 +1,21 @@
 [[projects]]
-name = "moelle"
+repo = "moelle"
 description = "楽に乱数使えるようにしたやつ"
 
 [[projects]]
-name = "splitmix"
+repo = "splitmix"
 description = "乱数のシード値作るやつ"
 
 [[projects]]
-name = "clipboard-editor"
+repo = "clipboard-editor"
 description = "クリップボード編集するやつ"
 
 [[archive]]
 name = "splat-site"
+repo = "ika-oyatsu"
 description = "ボット無しでいけんちゃう⁉️と思って作ったらいけて舞い上がってドメインとってもたやつ"
 
 [[archive]]
+name = "urng"
 repo = "urng_lab"
 description = "乱数生成システムをちゃんと作ろうとしたやつ"
