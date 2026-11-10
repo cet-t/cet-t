@@ -1,5 +1,4 @@
 [[projects]]
-name = "moelle / trng / urng_core"
 repo = "moelle"
 description = "楽に乱数使えるようにしたやつ"
 
