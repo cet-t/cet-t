@@ -15,5 +15,5 @@ name = "splat-site"
 description = "ボット無しでいけんちゃう⁉️と思って作ったらいけて舞い上がってドメインとってもたやつ"
 
 [[archive]]
-name = "urng_lab"
+repo = "urng_lab"
 description = "乱数生成システムをちゃんと作ろうとしたやつ"

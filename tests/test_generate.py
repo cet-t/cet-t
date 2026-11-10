@@ -16,18 +16,18 @@ def build(toml_text: str) -> str:
 
 SAMPLE = """
 [[projects]]
-name = "moelle"
+repo = "moelle"
 description = "Random number generator abstractions"
 
 [[projects]]
-name = "splitmix"
+repo = "splitmix"
 description = "SplitMix32 / SplitMix64"
 
 [[projects]]
-name = "clipboard-editor"
+repo = "clipboard-editor"
 
 [[archive]]
-name = "urng"
+repo = "urng"
 description = "Random number generation library"
 """
 
@@ -52,26 +52,26 @@ class RenderTest(unittest.TestCase):
         self.assertEqual(build(SAMPLE), expected)
 
     def test_order_preserved(self):
-        out = build('[[projects]]\nname = "zeta"\n[[projects]]\nname = "alpha"\n[[projects]]\nname = "mid"\n')
+        out = build('[[projects]]\nrepo = "zeta"\n[[projects]]\nrepo = "alpha"\n[[projects]]\nrepo = "mid"\n')
         self.assertLess(out.index("[zeta]"), out.index("[alpha]"))
         self.assertLess(out.index("[alpha]"), out.index("[mid]"))
 
     def test_description_column_added(self):
-        out = build('[[projects]]\nname = "a"\ndescription = "x"\n')
+        out = build('[[projects]]\nrepo = "a"\ndescription = "x"\n')
         self.assertIn("| Repository | Description |\n| --- | --- |\n| [a](https://github.com/cet-t/a) | x |", out)
 
     def test_description_column_omitted(self):
-        out = build('[[archive]]\nname = "urng"\n')
+        out = build('[[archive]]\nrepo = "urng"\n')
         self.assertIn("# Archive\n\n| Repository |\n| --- |\n| [urng](https://github.com/cet-t/urng) |\n", out)
         self.assertNotIn("Description", out)
 
     def test_partial_descriptions(self):
-        out = build('[[projects]]\nname = "a"\n[[projects]]\nname = "b"\ndescription = "B"\n')
+        out = build('[[projects]]\nrepo = "a"\n[[projects]]\nrepo = "b"\ndescription = "B"\n')
         self.assertIn("| [a](https://github.com/cet-t/a) | |\n", out)
         self.assertIn("| [b](https://github.com/cet-t/b) | B |\n", out)
 
     def test_independent_columns_per_category(self):
-        out = build('[[projects]]\nname = "a"\ndescription = "A"\n[[archive]]\nname = "b"\n')
+        out = build('[[projects]]\nrepo = "a"\ndescription = "A"\n[[archive]]\nrepo = "b"\n')
         projects, archive = out.split("# Archive")
         self.assertIn("| Repository | Description |", projects)
         self.assertIn("| Repository |\n", archive)
@@ -82,16 +82,34 @@ class RenderTest(unittest.TestCase):
             build(""),
             "# Projects\n\n| Repository |\n| --- |\n\n# Archive\n\n| Repository |\n| --- |\n",
         )
-        out = build('[[archive]]\nname = "a"\n')
+        out = build('[[archive]]\nrepo = "a"\n')
         self.assertTrue(out.startswith("# Projects\n\n| Repository |\n| --- |\n\n# Archive"))
 
     def test_special_characters_escaped(self):
-        out = build('[[projects]]\nname = "a"\ndescription = "x | y \\\\ z\\nnext"\n')
+        out = build('[[projects]]\nrepo = "a"\ndescription = "x | y \\\\ z\\nnext"\n')
         self.assertIn("| [a](https://github.com/cet-t/a) | x \\| y \\\\ z next |\n", out)
 
     def test_blank_description_treated_as_missing(self):
-        out = build('[[projects]]\nname = "a"\ndescription = "  "\n')
+        out = build('[[projects]]\nrepo = "a"\ndescription = "  "\n')
         self.assertNotIn("Description", out)
+
+    def test_name_used_as_label(self):
+        out = build('[[projects]]\nname = "moelle / trng / urng_core"\nrepo = "moelle"\n')
+        self.assertIn("| [moelle / trng / urng_core](https://github.com/cet-t/moelle) |\n", out)
+
+    def test_repo_used_as_label_without_name(self):
+        for extra in ["", 'name = "  "\n']:
+            with self.subTest(extra=extra):
+                out = build(f'[[projects]]\nrepo = "moelle"\n{extra}')
+                self.assertIn("| [moelle](https://github.com/cet-t/moelle) |\n", out)
+
+    def test_name_special_characters_escaped(self):
+        out = build('[[projects]]\nrepo = "a"\nname = "x [y] | z"\n')
+        self.assertIn("| [x \\[y\\] \\| z](https://github.com/cet-t/a) |\n", out)
+
+    def test_duplicate_names_allowed(self):
+        out = build('[[projects]]\nrepo = "a"\nname = "same"\n[[projects]]\nrepo = "b"\nname = "same"\n')
+        self.assertEqual(out.count("[same]"), 2)
 
     def test_deterministic(self):
         self.assertEqual(build(SAMPLE), build(SAMPLE))
@@ -103,35 +121,37 @@ class ValidateTest(unittest.TestCase):
             build(toml_text)
         self.assertIn(message, str(ctx.exception))
 
-    def test_invalid_names(self):
+    def test_invalid_repo_names(self):
         for name in ["", "a b", "foo/bar", "..", ".", "a" * 101, "日本語", "../x"]:
             with self.subTest(name=name):
-                self.assertInvalid(f'[[projects]]\nname = "{name}"\n', "invalid repository name")
+                self.assertInvalid(f'[[projects]]\nrepo = "{name}"\n', "invalid repository name")
 
-    def test_valid_names(self):
+    def test_valid_repo_names(self):
         for name in ["a", "A-b_c.d", "cet-t", ".github", "a" * 100]:
             with self.subTest(name=name):
-                build(f'[[projects]]\nname = "{name}"\n')
+                build(f'[[projects]]\nrepo = "{name}"\n')
 
-    def test_missing_name(self):
-        self.assertInvalid('[[projects]]\ndescription = "x"\n', "'name' is required")
+    def test_missing_repo(self):
+        self.assertInvalid('[[projects]]\ndescription = "x"\n', "'repo' is required")
+        self.assertInvalid('[[projects]]\nname = "a"\n', "'repo' is required")
 
     def test_non_string_fields(self):
-        self.assertInvalid("[[projects]]\nname = 1\n", "'name' is required")
-        self.assertInvalid('[[projects]]\nname = "a"\ndescription = 1\n', "'description' must be a string")
+        self.assertInvalid("[[projects]]\nrepo = 1\n", "'repo' is required")
+        self.assertInvalid('[[projects]]\nrepo = "a"\ndescription = 1\n', "'description' must be a string")
+        self.assertInvalid('[[projects]]\nrepo = "a"\nname = 1\n', "'name' must be a string")
 
     def test_unknown_keys(self):
-        self.assertInvalid('[[project]]\nname = "a"\n', "unknown top-level key")
-        self.assertInvalid('[[projects]]\nname = "a"\nurl = "x"\n', "unknown field")
+        self.assertInvalid('[[project]]\nrepo = "a"\n', "unknown top-level key")
+        self.assertInvalid('[[projects]]\nrepo = "a"\nurl = "x"\n', "unknown field")
 
     def test_category_must_be_array(self):
         self.assertInvalid('projects = "a"\n', "array of tables")
 
     def test_duplicate_within_category(self):
-        self.assertInvalid('[[projects]]\nname = "a"\n[[projects]]\nname = "a"\n', "duplicate")
+        self.assertInvalid('[[projects]]\nrepo = "a"\n[[projects]]\nrepo = "a"\n', "duplicate")
 
     def test_duplicate_across_categories(self):
-        self.assertInvalid('[[projects]]\nname = "Foo"\n[[archive]]\nname = "foo"\n', "duplicate")
+        self.assertInvalid('[[projects]]\nrepo = "Foo"\n[[archive]]\nrepo = "foo"\n', "duplicate")
 
 
 class MainTest(unittest.TestCase):
@@ -158,7 +178,7 @@ class MainTest(unittest.TestCase):
 
     def test_invalid_config_leaves_readme_untouched(self):
         self.output.write_text("original\n", encoding="utf-8")
-        for text in ['[[projects]]\nname = "bad name"\n', "not = [valid"]:
+        for text in ['[[projects]]\nrepo = "bad name"\n', "not = [valid"]:
             with self.subTest(text=text):
                 self.config.write_text(text, encoding="utf-8")
                 self.assertEqual(self.run_main(), 1)
