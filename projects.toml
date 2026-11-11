@@ -3,6 +3,14 @@ repo = "moelle"
 description = "楽に乱数使えるようにしたやつ"
 
 [[projects]]
+repo = "bitflags2"
+description = "便利ビットフラグのやつ"
+
+[[projects]]
+repo = "gits"
+description = "いろんな切り替えが楽になるやつ"
+
+[[projects]]
 repo = "splitmix"
 description = "乱数のシード値作るやつ"
 
